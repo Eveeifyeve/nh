@@ -27,24 +27,19 @@ jobs:
           git diff-index --quiet HEAD
         name: Check formatting
 
-  Test_Darwin:
-    runs-on: macos-latest
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix: 
+        os: [macos-latest, ubuntu-latest]
 
     steps:
       - uses: cachix/install-nix-action@master
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: dtolnay/rust-toolchain@stable
       - uses: actions/checkout@v4
 
-      - run: nix build -L --no-link
-        name: Build
-
-      - run: |
-          mkdir flake
-          cd flake
-          nix flake init -t nix-darwin
-          git add flake.nix
-          cd ..
-          nix run .#nh -- darwin switch --hostname simple --dry --no-nom --verbose ./flake
-        name: Test Switching to Nix Darwin Configuration
+      - name: Run Tests
+        run: cargo test

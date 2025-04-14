@@ -10,6 +10,8 @@ mod json;
 mod logging;
 mod nixos;
 mod search;
+#[cfg(test)]
+mod tests;
 mod update;
 mod util;
 

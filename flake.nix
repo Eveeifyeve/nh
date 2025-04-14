@@ -31,5 +31,6 @@
       });
 
       formatter = forAllSystems (pkgs: pkgs.nixfmt-rfc-style);
+      templates.test-nixos-system = ./src/flake;
     };
 }
